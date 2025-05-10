@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interview Question</title>
+    <style>
+        body {
+            background-color: #1a2b4c;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 40px;
+        }
+
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        #preview {
+            width: 80vw;
+            max-width: 600px;
+            border-radius: 14px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            border: none;
+            background-color: #00aaff;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background-color: #008ecc;
+        }
+
+        .question-container {
+            margin-top: 30px;
+        }
+
+        .question {
+            font-size: 22px;
+            margin-top: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="video-container">
+            <video id="preview" autoplay muted></video>
+
+            <button class="btn" onclick="startRecording()">Start</button>
+            <button class="btn" onclick="stopRecording()">Stop & Submit</button>
+        </div>
+
+        <div class="question-container">
+            <div class="question">{{ question }}</div>
+        </div>
+
+        <form id="uploadForm" action="/submit" method="POST" enctype="multipart/form-data" style="display: none;">
+            <input type="file" name="video" id="videoFileInput">
+        </form>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let recordedChunks = [];
+        let stream;
+
+        async function startRecording() {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            document.getElementById('preview').srcObject = stream;
+
+            recordedChunks = [];
+
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = function (e) {
+                if (e.data.size > 0) recordedChunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = function () {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const file = new File([blob], 'interview_response.webm', { type: 'video/webm' });
+
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                document.getElementById('videoFileInput').files = dataTransfer.files;
+
+                document.getElementById('uploadForm').submit();
+            };
+
+            mediaRecorder.start();
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && stream) {
+                mediaRecorder.stop();
+                stream.getTracks().forEach(track => track.stop());
+            }
+        }
+    </script>
+</body>
+</html>
