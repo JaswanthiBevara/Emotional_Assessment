@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a2b4c;
+            color: #f8f9fa;
+            padding-top: 60px; /* To prevent content from hiding behind navbar */
+        }
+        .container {
+            width: 90vw;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #001f3f;
+            padding: 15px 20px;
+            z-index: 1000;
+        }
+        nav a {
+            text-decoration: none;
+            padding: 12px 18px;
+            background-color: #0056b3; /* Previously hover color */
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            background-color: #003f80; /* Darker shade */
+        }
+    
+        /* Section Styling */
+        .section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            padding: 40px 0;
+            border-bottom: 1px solid #ddd;
+            width: 100%;
+        }
+        .text-content {
+            flex: 1;
+            text-align: justify;
+            padding: 20px;
+            font-size: 18px;
+        }
+        .text-content h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        .text-content p, .text-content ul {
+            list-style-type: none;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        .image-content {
+            flex: 1;
+            text-align: center;
+        }
+        .image-content img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+
+        /* Mock Interview Button */
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 14px 30px;
+            background-color: darkgreen; /* Previously hover color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #004d00; /* Darker green */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                width: 95vw;
+            }
+            .section {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            .text-content, .image-content {
+                max-width: 100%;
+                text-align: center;
+            }
+            .image-content img {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            
+        </div>
+        <div>
+            {% if logged_in %}
+                <a href="{{ url_for('logout') }}">Logout 🚪</a> 
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div style="flex: 1; text-align: left; color: white; font-weight: bold;">
+        {% if logged_in %}
+            Welcome, {{ user_name }}
+        {% endif %}
+    </div>
+
+    <div style="flex: 1; text-align: center; color: white; font-size: 20px; font-weight: bold;">
+        MockIntelli
+    </div>
+
+    <!--<div class="container">
+        <h1>Welcome to MockIntelli</h1>-->
+
+        
+        <div class="section">
+            <div class="text-content">
+                <h2>About Us</h2>
+                <p>Welcome to <strong>Emotional Assessment: A Guide to Mock Interviews & Emotional Status</strong> – your personal AI-powered interview coach!</p>
+                <p>We help users practice mock interviews while assessing their emotional expressions for valuable feedback.</p>
+            </div>
+            <div class="image-content">
+                <img src="{{ url_for('static', filename='images/About_us.jpg') }}" alt="About Us">
+            </div>
+        </div>
+
+       
+        <div class="section">
+            <div class="image-content">
+                <img src="{{ url_for('static', filename='images/services.webp') }}" alt="What We Offer">
+            </div>
+            <div class="text-content">
+                <h2>What We Offer</h2>
+                <ul>
+                    <li>🔹 <strong>Real-Time Emotion Analysis</strong> – Tracks facial expressions while answering questions.</li>
+                    <li>🔹 <strong>Performance Reports</strong> – Insights on emotional fluctuations.</li>
+                    <li>🔹 <strong>User-Friendly Dashboard</strong> – Track progress over time.</li>
+                    <li>🔹 <strong>Interactive UI</strong> – Seamless experience.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="text-content">
+                <h2>Why Choose Us?</h2>
+                <ul>
+                    <li>✅ <strong>AI-Powered Emotion Detection</strong> – Improve interview confidence.</li>
+                    <li>✅ <strong>Custom Feedback & Insights</strong> – Understand emotions.</li>
+                    <li>✅ <strong>Free & User-Friendly</strong> – Stress-free preparation.</li>
+                </ul>
+            </div>
+            <div class="image-content">
+                <img src="{{ url_for('static', filename='images/Choose_us.webp') }}" alt="Why Choose Us">
+            </div>
+        </div>
+
+        
+        <div class="btn-container">
+            <a href="{{ url_for('interview') }}" class="btn">Take Mock Interview</a>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
